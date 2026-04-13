@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Linkedin, Send, Globe2 } from "lucide-react";
+import { CONTACT_INFO } from "@/constants/data";
 
 export default function Contact() {
   return (
@@ -59,9 +60,9 @@ export default function Contact() {
 
             <div className="space-y-6 sm:space-y-12">
               {[
-                { icon: Mail, title: "Email Us", detail: "info@classport.in", sub: "We respond within 24 hours" },
-                { icon: Phone, title: "Call Us", detail: "+91 98765 43210", sub: "Mon-Sat, 9am - 6pm" },
-                { icon: MapPin, title: "Visit Us", detail: "Sector 62, Noida, UP, India", sub: "Corporate Headquarters" },
+                { icon: Mail, title: "Email Us", detail: CONTACT_INFO.email, sub: "We respond within 24 hours", href: `mailto:${CONTACT_INFO.email}` },
+                { icon: Phone, title: "Call Us", detail: CONTACT_INFO.phone, sub: "Mon-Sat, 9am - 6pm", href: `tel:${CONTACT_INFO.phone}` },
+                { icon: MapPin, title: "Visit Us", detail: CONTACT_INFO.address, sub: "Corporate Headquarters", href: "#" },
               ].map((item, i) => (
                 <div key={i} className="flex gap-4 sm:gap-8 group">
                   <div className="bg-primary/5 w-12 sm:w-20 h-12 sm:h-20 rounded-xl sm:rounded-3xl flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-500 border border-primary/10 shadow-sm shrink-0">
@@ -69,7 +70,11 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-1 sm:mb-2">{item.title}</h4>
-                    <p className="text-lg sm:text-3xl font-black text-slate-950 tracking-tight mb-1 sm:mb-2">{item.detail}</p>
+                    {item.href !== "#" ? (
+                      <a href={item.href} className="text-lg sm:text-3xl font-black text-slate-950 tracking-tight mb-1 sm:mb-2 hover:text-primary transition-colors block">{item.detail}</a>
+                    ) : (
+                      <p className="text-lg sm:text-3xl font-black text-slate-950 tracking-tight mb-1 sm:mb-2">{item.detail}</p>
+                    )}
                     <p className="text-sm sm:text-xl text-slate-500 font-medium">{item.sub}</p>
                   </div>
                 </div>
