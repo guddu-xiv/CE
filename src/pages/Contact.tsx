@@ -1,12 +1,41 @@
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import Section from "@/components/ui/Section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Linkedin, Send, Globe2 } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Linkedin, Send, Globe2, Loader2, CheckCircle2 } from "lucide-react";
 import { CONTACT_INFO } from "@/constants/data";
 
 export default function Contact() {
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("loading");
+    
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      const response = await fetch("https://formspree.io/f/classportinfo@gmail.com", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        setStatus("success");
+        (e.target as HTMLFormElement).reset();
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      setStatus("error");
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -99,27 +128,60 @@ export default function Contact() {
 
           {/* Contact Form */}
           <div className="glass p-6 sm:p-20 rounded-[2.5rem] sm:rounded-[5rem] shadow-2xl border border-white/40 mt-8 lg:mt-0">
-            <form className="space-y-6 sm:space-y-10" onSubmit={(e) => e.preventDefault()}>
-              <div className="space-y-2 sm:space-y-4">
-                <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Full Name</label>
-                <Input placeholder="John Doe" className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
-              </div>
-              <div className="space-y-2 sm:space-y-4">
-                <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Email Address</label>
-                <Input type="email" placeholder="john@school.edu" className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
-              </div>
-              <div className="space-y-2 sm:space-y-4">
-                <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Message</label>
-                <Textarea placeholder="Tell us about your inquiry..." className="rounded-[1.5rem] sm:rounded-[3rem] p-5 sm:p-8 text-base sm:text-xl min-h-[150px] sm:min-h-[250px] border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
-              </div>
-              <Button className="w-full rounded-full py-5 sm:py-10 text-lg sm:text-2xl font-black shadow-xl sm:shadow-2xl sm:shadow-primary/30 hover:scale-[1.02] transition-all bg-primary text-white hover:bg-primary/90">
-                Send Message
-                <Send className="ml-2 sm:ml-4 w-5 sm:w-8 h-5 sm:h-8" />
-              </Button>
-              <p className="text-center text-slate-400 text-[9px] sm:text-sm font-bold uppercase tracking-widest">
-                We'll get back to you shortly.
-              </p>
-            </form>
+            {status === "success" ? (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-20 space-y-6"
+              >
+                <div className="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+                  <CheckCircle2 className="w-12 h-12 text-secondary" />
+                </div>
+                <h3 className="text-3xl font-black text-slate-950 tracking-tight">Message Sent!</h3>
+                <p className="text-xl text-slate-600 font-medium max-w-xs mx-auto">
+                  Thank you for reaching out. We'll get back to you shortly.
+                </p>
+                <Button 
+                  onClick={() => setStatus("idle")}
+                  variant="outline" 
+                  className="rounded-full px-8 py-6 text-lg font-bold border-primary text-primary hover:bg-primary hover:text-white"
+                >
+                  Send Another Message
+                </Button>
+              </motion.div>
+            ) : (
+              <form className="space-y-6 sm:space-y-10" onSubmit={handleSubmit}>
+                <div className="space-y-2 sm:space-y-4">
+                  <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Full Name</label>
+                  <Input name="name" placeholder="John Doe" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                </div>
+                <div className="space-y-2 sm:space-y-4">
+                  <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Email Address</label>
+                  <Input name="email" type="email" placeholder="john@school.edu" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                </div>
+                <div className="space-y-2 sm:space-y-4">
+                  <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Message</label>
+                  <Textarea name="message" placeholder="Tell us about your inquiry..." required className="rounded-[1.5rem] sm:rounded-[3rem] p-5 sm:p-8 text-base sm:text-xl min-h-[150px] sm:min-h-[250px] border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                </div>
+                <Button 
+                  type="submit" 
+                  disabled={status === "loading"}
+                  className="w-full rounded-full py-5 sm:py-10 text-lg sm:text-2xl font-black shadow-xl sm:shadow-2xl sm:shadow-primary/30 hover:scale-[1.02] transition-all bg-primary text-white hover:bg-primary/90"
+                >
+                  {status === "loading" ? (
+                    <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin" />
+                  ) : (
+                    <>Send Message <Send className="ml-2 sm:ml-4 w-5 sm:w-8 h-5 sm:h-8" /></>
+                  )}
+                </Button>
+                {status === "error" && (
+                  <p className="text-center text-red-500 text-sm font-bold">Something went wrong. Please try again.</p>
+                )}
+                <p className="text-center text-slate-400 text-[9px] sm:text-sm font-bold uppercase tracking-widest">
+                  We'll get back to you shortly.
+                </p>
+              </form>
+            )}
           </div>
         </div>
       </Section>
