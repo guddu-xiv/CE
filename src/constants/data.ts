@@ -204,13 +204,13 @@ export const FOUNDERS = [
   {
     name: "Geeta Kharbanda",
     role: "Founder",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800",
+    image: "https://iili.io/BWlkJEX.png",
     bio: "Visionary leader dedicated to transforming educational travel into a core part of the school curriculum."
   },
   {
     name: "Saurabh Kwatra",
     role: "Co-Founder",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800",
+    image: "https://iili.io/BWlw2ON.png",
     bio: "Expert in global logistics and student safety, ensuring every journey is seamless and impactful."
   }
 ];
