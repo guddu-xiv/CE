@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import Section from "@/components/ui/Section";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Send, Phone, Mail, GraduationCap, School, Users, CheckCircle2 } from "lucide-react";
+import { Send, Phone, Mail, GraduationCap, School, Users, CheckCircle2, Loader2 } from "lucide-react";
 
 export default function Enquiry() {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // In a real app, handle form submission here
+    setStatus("loading");
+    
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      const response = await fetch("https://formspree.io/f/classportinfo@gmail.com", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        setStatus("success");
+        (e.target as HTMLFormElement).reset();
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      setStatus("error");
+    }
   };
 
   return (
@@ -103,52 +126,86 @@ export default function Enquiry() {
           {/* Form */}
           <Card className="glass p-6 sm:p-12 rounded-[2.5rem] sm:rounded-[5rem] shadow-2xl border border-white/40 overflow-hidden mt-8 lg:mt-0">
             <CardContent className="p-2 sm:p-8">
-              <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
-                  <div className="space-y-2 sm:space-y-4">
-                    <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">School Name</label>
-                    <Input placeholder="Global International School" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+              {status === "success" ? (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-20 space-y-6"
+                >
+                  <div className="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <CheckCircle2 className="w-12 h-12 text-secondary" />
                   </div>
-                  <div className="space-y-2 sm:space-y-4">
-                    <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Contact Person</label>
-                    <Input placeholder="Principal / Coordinator" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                  <h3 className="text-3xl font-black text-slate-950 tracking-tight">Proposal Requested!</h3>
+                  <p className="text-xl text-slate-600 font-medium max-w-xs mx-auto">
+                    Thank you for reaching out. Our team will contact you within 24 hours.
+                  </p>
+                  <Button 
+                    onClick={() => setStatus("idle")}
+                    variant="outline" 
+                    className="rounded-full px-8 py-6 text-lg font-bold border-primary text-primary hover:bg-primary hover:text-white"
+                  >
+                    Send Another Request
+                  </Button>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-10">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+                    <div className="space-y-2 sm:space-y-4">
+                      <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">School Name</label>
+                      <Input name="school_name" placeholder="Global International School" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                    </div>
+                    <div className="space-y-2 sm:space-y-4">
+                      <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Contact Person</label>
+                      <Input name="contact_person" placeholder="Principal / Coordinator" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                    </div>
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
-                  <div className="space-y-2 sm:space-y-4">
-                    <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Phone Number</label>
-                    <Input placeholder="+91 98765 43210" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+                    <div className="space-y-2 sm:space-y-4">
+                      <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Phone Number</label>
+                      <Input name="phone" placeholder="+91 89299 55666" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                    </div>
+                    <div className="space-y-2 sm:space-y-4">
+                      <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Email Address</label>
+                      <Input name="email" type="email" placeholder="admin@school.edu" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                    </div>
                   </div>
-                  <div className="space-y-2 sm:space-y-4">
-                    <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Email Address</label>
-                    <Input type="email" placeholder="admin@school.edu" required className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
-                  <div className="space-y-2 sm:space-y-4">
-                    <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Preferred Destination</label>
-                    <Input placeholder="e.g. Japan, Europe" className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+                    <div className="space-y-2 sm:space-y-4">
+                      <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Preferred Destination</label>
+                      <Input name="destination" placeholder="e.g. Japan, Europe" className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                    </div>
+                    <div className="space-y-2 sm:space-y-4">
+                      <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Expected Students</label>
+                      <Input name="students_count" type="number" placeholder="e.g. 25" className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                    </div>
                   </div>
+
                   <div className="space-y-2 sm:space-y-4">
-                    <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Expected Students</label>
-                    <Input type="number" placeholder="e.g. 25" className="rounded-xl sm:rounded-3xl py-5 sm:py-10 px-5 sm:px-8 text-base sm:text-xl border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
+                    <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Message / Requirements</label>
+                    <Textarea name="message" placeholder="Tell us about your specific learning goals..." className="rounded-[1.5rem] sm:rounded-[3rem] p-5 sm:p-8 text-base sm:text-xl min-h-[150px] sm:min-h-[200px] border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
                   </div>
-                </div>
 
-                <div className="space-y-2 sm:space-y-4">
-                  <label className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em] sm:tracking-[0.3em] ml-4 sm:ml-6">Message / Requirements</label>
-                  <Textarea placeholder="Tell us about your specific learning goals..." className="rounded-[1.5rem] sm:rounded-[3rem] p-5 sm:p-8 text-base sm:text-xl min-h-[150px] sm:min-h-[200px] border-slate-100 bg-white/50 focus:bg-white focus:ring-primary/10 transition-all font-medium" />
-                </div>
-
-                <Button type="submit" className="w-full rounded-full py-5 sm:py-10 text-lg sm:text-2xl font-black shadow-xl sm:shadow-2xl sm:shadow-primary/30 hover:scale-[1.02] transition-all bg-primary text-white hover:bg-primary/90">
-                  Request Proposal <Send className="ml-2 sm:ml-4 w-5 sm:w-8 h-5 sm:h-8" />
-                </Button>
-                <p className="text-center text-slate-400 text-[9px] sm:text-sm font-bold uppercase tracking-widest">
-                  Our team will contact you within 24 hours.
-                </p>
-              </form>
+                  <Button 
+                    type="submit" 
+                    disabled={status === "loading"}
+                    className="w-full rounded-full py-5 sm:py-10 text-lg sm:text-2xl font-black shadow-xl sm:shadow-2xl sm:shadow-primary/30 hover:scale-[1.02] transition-all bg-primary text-white hover:bg-primary/90"
+                  >
+                    {status === "loading" ? (
+                      <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin" />
+                    ) : (
+                      <>Request Proposal <Send className="ml-2 sm:ml-4 w-5 sm:w-8 h-5 sm:h-8" /></>
+                    )}
+                  </Button>
+                  {status === "error" && (
+                    <p className="text-center text-red-500 text-sm font-bold">Something went wrong. Please try again.</p>
+                  )}
+                  <p className="text-center text-slate-400 text-[9px] sm:text-sm font-bold uppercase tracking-widest">
+                    Our team will contact you within 24 hours.
+                  </p>
+                </form>
+              )}
             </CardContent>
           </Card>
         </div>
