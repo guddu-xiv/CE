@@ -49,6 +49,10 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
     /* Very light tint of Bone for a clean Apple look */
     --background: #fcfbf8; 
@@ -96,4 +100,3 @@
     @apply bg-slate-950/80 backdrop-blur-2xl border border-white/10 shadow-2xl;
   }
 }
-
