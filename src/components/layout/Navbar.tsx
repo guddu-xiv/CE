@@ -108,15 +108,15 @@ export default function Navbar() {
             initial={{ opacity: 0, scale: 0.95, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
-            className="lg:hidden absolute top-[calc(100%+1rem)] left-0 right-0 bg-white/95 backdrop-blur-3xl shadow-2xl border border-white/40 overflow-hidden rounded-[3rem]"
+            className="lg:hidden absolute top-[calc(100%+0.5rem)] left-0 right-0 bg-white/95 backdrop-blur-3xl shadow-2xl border border-white/40 overflow-hidden rounded-[2rem]"
           >
-            <div className="p-8 space-y-2">
+            <div className="p-5 space-y-1">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
                   className={cn(
-                    "block px-6 py-4 text-lg font-bold rounded-2xl transition-all",
+                    "block px-5 py-3 text-base font-bold rounded-xl transition-all",
                     location.pathname === link.href
                       ? "bg-primary text-white shadow-md shadow-primary/20"
                       : "text-slate-700 hover:bg-slate-50 hover:text-primary"
@@ -125,8 +125,8 @@ export default function Navbar() {
                   {link.name}
                 </Link>
               ))}
-              <div className="pt-6">
-                <Button asChild className="w-full rounded-full py-7 text-lg font-bold bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20">
+              <div className="pt-4">
+                <Button asChild className="w-full rounded-full py-5 text-base font-bold bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20">
                   <Link to="/enquiry">School Enquiry</Link>
                 </Button>
               </div>
