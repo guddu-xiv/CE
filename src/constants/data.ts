@@ -199,21 +199,22 @@ export const TESTIMONIALS = [
     trip: "Europe Cultural Tour 2024"
   }
 ];
-
+// ... baki code waisa hi rahega ...
 export const FOUNDERS = [
   {
     name: "Geeta Kharbanda",
     role: "Founder",
-    image: "https://iili.io/BWlkJEX.png",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800",
     bio: "Visionary leader dedicated to transforming educational travel into a core part of the school curriculum."
   },
   {
     name: "Saurabh Kwatra",
     role: "Co-Founder",
-    image: "https://iili.io/BWlw2ON.png",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800",
     bio: "Expert in global logistics and student safety, ensuring every journey is seamless and impactful."
   }
 ];
+// ... baki code waisa hi rahega ...
 
 export const INITIATIVES = [
   { title: "Classport School Trips", desc: "Adventure camps, wildlife safaris, and historical tours designed to supplement classroom learning." },
