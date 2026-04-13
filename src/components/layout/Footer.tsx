@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Linkedin, Mail, Phone, MapPin, Heart } from "lucide-react";
-import { COMPANY_NAME, LOGO_URL, NAV_LINKS } from "@/constants/data";
+import { COMPANY_NAME, LOGO_URL, NAV_LINKS, CONTACT_INFO } from "@/constants/data";
 
 export default function Footer() {
   return (
@@ -72,19 +72,19 @@ export default function Footer() {
                 <div className="w-10 h-10 rounded-xl bg-bone/30 flex items-center justify-center shrink-0">
                   <MapPin size={18} className="text-primary" />
                 </div>
-                <span className="pt-2">Sector 62, Noida, UP, India</span>
+                <span className="pt-2">{CONTACT_INFO.address}</span>
               </li>
               <li className="flex gap-4 text-sm font-semibold">
                 <div className="w-10 h-10 rounded-xl bg-bone/30 flex items-center justify-center shrink-0">
                   <Phone size={18} className="text-primary" />
                 </div>
-                <span className="pt-2">+91 98765 43210</span>
+                <a href={`tel:${CONTACT_INFO.phone}`} className="pt-2 hover:text-primary transition-colors">{CONTACT_INFO.phone}</a>
               </li>
               <li className="flex gap-4 text-sm font-semibold">
                 <div className="w-10 h-10 rounded-xl bg-bone/30 flex items-center justify-center shrink-0">
                   <Mail size={18} className="text-primary" />
                 </div>
-                <span className="pt-2">info@classport.in</span>
+                <a href={`mailto:${CONTACT_INFO.email}`} className="pt-2 hover:text-primary transition-colors">{CONTACT_INFO.email}</a>
               </li>
             </ul>
           </div>
