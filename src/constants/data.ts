@@ -199,7 +199,7 @@ export const TESTIMONIALS = [
     trip: "Europe Cultural Tour 2024"
   }
 ];
-// ... baki code waisa hi rahega ...
+
 export const FOUNDERS = [
   {
     name: "Geeta Kharbanda",
@@ -214,7 +214,6 @@ export const FOUNDERS = [
     bio: "Expert in global logistics and student safety, ensuring every journey is seamless and impactful."
   }
 ];
-// ... baki code waisa hi rahega ...
 
 export const INITIATIVES = [
   { title: "Classport School Trips", desc: "Adventure camps, wildlife safaris, and historical tours designed to supplement classroom learning." },
@@ -262,6 +261,12 @@ export const SAFETY_HIGHLIGHTS = [
   { title: "Verified Hotels", description: "Strictly audited accommodation for student safety." },
   { title: "Emergency Response", description: "Structured SOP for any unforeseen situation." },
 ];
+
+export const CONTACT_INFO = {
+  address: "123, Basement, near Yes Bank, Hargobind Enclave, A G C R Enclave, Anand Vihar, Delhi, 110092",
+  phone: "+91 89299 55666",
+  email: "Info@classportedu.com",
+};
 
 export const CRISIS_SOP = {
   purpose: "To ensure the safety, security, and well-being of all students, teachers, and staff during international travel programs through a structured emergency response system.",
